@@ -9,13 +9,13 @@
     <changeSet id="1.0.0" author="Eduardo Trentin">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="USUARIO"/>
+                <tableExists tableName="USUARIOS"/>
             </not>
         </preConditions>
         <comment>Padrão para arquitetura de API - Tabela Usuario</comment>
         <sql>
-            CREATE TABLE USUARIO (
-            CD_USUARIO INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+            CREATE TABLE USUARIOS (
+            CD_USUARIO  NUMBER(10,0) NOT NULL ,
             NM_USUARIO VARCHAR(50),
             DS_SENHA VARCHAR(30),
             PRIMARY KEY (CD_USUARIO)
@@ -23,7 +23,7 @@
         </sql>
         <rollback>
             <sql>
-                DROP TABLE USUARIO;
+                DROP TABLE USUARIOS;
             </sql>
         </rollback>
     </changeSet>
@@ -31,20 +31,20 @@
     <changeSet id="1.0.1" author="Eduardo Trentin">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="TAREFA"/>
+                <tableExists tableName="TAREFAS"/>
             </not>
         </preConditions>
         <comment>Padrão para arquitetura de API - Tabela </comment>
         <sql>
-            CREATE TABLE TAREFA (
-            CD_TAREFA INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+            CREATE TABLE TAREFAS (
+            CD_TAREFA NUMBER(10,0) NOT NULL ,
             DS_TAREFA VARCHAR(255),
             PRIMARY KEY (CD_TAREFA)
             );
         </sql>
         <rollback>
             <sql>
-                DROP TABLE TAREFA;
+                DROP TABLE TAREFAS;
             </sql>
         </rollback>
     </changeSet>
@@ -68,6 +68,29 @@
         <rollback>
             <sql>
                 DROP SEQUENCE SEQ_TAREFA;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1.0.3" author="Eduardo Trentin">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="SEQ_USUARIOS"/>
+            </not>
+        </preConditions>
+        <comment>Padrão para arquitetura de API</comment>
+        <sql>
+            CREATE SEQUENCE SEQ_USUARIOS
+            MINVALUE 1
+            MAXVALUE 9999999999999999999999999999
+            START WITH 1
+            INCREMENT BY 1
+            NOCACHE
+            ORDER;
+        </sql>
+        <rollback>
+            <sql>
+                DROP SEQUENCE SEQ_USUARIOS;
             </sql>
         </rollback>
     </changeSet>
