@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet id="1.0.1.0" author="Eduardo Trentin">
+        <preConditions onFail="MARK_RAN" onFailMessage="Erro ao adicionar coluna DT_CREATION na tabela TASK">
+            <not>
+                <columnExists tableName="TASK" columnName="DT_CREATION" />
+            </not>
+        </preConditions>
+        <comment>Adicionar coluna 'DT_CREATION' na tabela 'TASK'</comment>
+        <addColumn tableName="TASK" >
+            <column name="DT_CREATION" type="DATE"/>
+        </addColumn>
+        <rollback>
+            ALTER TABLE TASK DROP COLUMN DT_CREATION;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1.0.1.1" author="Eduardo Trentin">
+        <preConditions onFail="MARK_RAN" onFailMessage="Erro ao adicionar coluna DT_CONCLUSION na tabela TASK">
+            <not>
+                <columnExists tableName="TASK" columnName="DT_CONCLUSION" />
+            </not>
+        </preConditions>
+        <comment>Adicionar coluna 'DT_CONCLUSION' na tabela 'TASK'</comment>
+        <addColumn tableName="TASK" >
+            <column name="DT_CONCLUSION" type="DATE"/>
+        </addColumn>
+        <rollback>
+            ALTER TABLE TASK DROP COLUMN DT_CONCLUSION;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1.0.1.2" author="Eduardo Trentin">
+        <preConditions onFail="MARK_RAN" onFailMessage="Erro ao adicionar coluna DT_CONCLUSION na tabela TASK">
+            <not>
+                <columnExists tableName="TASK" columnName="DT_CONCLUSION" />
+            </not>
+        </preConditions>
+        <comment>Adicionar coluna 'DT_CONCLUSION' na tabela 'TASK'</comment>
+        <addColumn tableName="TASK" >
+            <column name="DT_CONCLUSION" type="DATE"/>
+        </addColumn>
+        <rollback>
+            ALTER TABLE TASK DROP COLUMN DT_CONCLUSION;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1.0.1.3" author="Eduardo Trentin">
+        <preConditions onFail="MARK_RAN" onFailMessage="Erro ao adicionar coluna FG_ATIVO na tabela TASK">
+            <not>
+                <columnExists tableName="TASK" columnName="FG_ATIVO" />
+            </not>
+        </preConditions>
+        <comment>Adicionar coluna 'FG_ATIVO' na tabela 'TASK'</comment>
+        <addColumn tableName="TASK" >
+            <column name="FG_ATIVO" valueNumeric="1" type="NUMBER(1,0)"/>
+        </addColumn>
+        <rollback>
+            ALTER TABLE TASK DROP COLUMN FG_ATIVO;
+        </rollback>
+    </changeSet>
+
+        <changeSet id="1.0.1.4" author="Eduardo Trentin">
+            <preConditions onFail="MARK_RAN" onFailMessage="Erro ao adicionar coluna CD_USER na tabela TASK">
+                <not>
+                    <columnExists tableName="TASK" columnName="CD_USER" />
+                </not>
+            </preConditions>
+            <comment>Adicionar coluna 'CD_USER' na tabela 'TASK'</comment>
+
+            <addColumn tableName="TASK">
+                <column name="CD_USER" type="NUMBER(19)">
+                    <constraints nullable="false" foreignKeyName="FK_TASK_USER_TASK" references="USER_TASK(CD_USER)" />
+                </column>
+            </addColumn>
+            <rollback>
+                ALTER TABLE TASK DROP COLUMN CD_USER;
+            </rollback>
+        </changeSet>
+
+
+
+
+</databaseChangeLog>

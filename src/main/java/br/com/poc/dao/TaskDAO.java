@@ -1,51 +1,54 @@
 package br.com.poc.dao;
 
-import br.com.poc.entidade.Tarefa;
+import br.com.poc.entidade.Task;
 import br.com.poc.exception.GenericPersistenciaException;
+import br.com.poc.util.FilterTask;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
-@Qualifier("tarefaDAO")
-public class TarefaDAO extends PersistenciaDao<Tarefa> {
+@Qualifier("taskDAO")
+public class TaskDAO extends PersistenciaDao<Task> {
 
     private static final long serialVersionUID = 6644637152890772203L;
 
-    private static final Logger log = Logger.getLogger(TarefaDAO.class);
+    private static final Logger log = Logger.getLogger(TaskDAO.class);
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void salvar(Tarefa tarefa) throws GenericPersistenciaException {
+    public void save(Task task) throws GenericPersistenciaException {
 
-        if(tarefa == null) {
+        if(task == null) {
             throw new GenericPersistenciaException("Tarefa deve ser preenchido");
         }
 
         try {
 
-            save(tarefa);
+            save(task);
             getEntityManager().flush();
 
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getLocalizedMessage() + this.getClass().getName());
             throw new GenericPersistenciaException(e.getLocalizedMessage());
         }
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void updateTarefa(Tarefa tarefa) throws GenericPersistenciaException {
+    public void update(Task task) throws GenericPersistenciaException {
 
-        if(tarefa == null) {
+        if(task == null) {
             throw new GenericPersistenciaException("Tarefa deve ser preenchido");
         }
 
         try {
 
-            update(tarefa);
+            update(task);
             getEntityManager().flush();
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
@@ -54,17 +57,17 @@ public class TarefaDAO extends PersistenciaDao<Tarefa> {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void remove(Integer idTarefa) throws GenericPersistenciaException {
+    public void remove(Integer idTask) throws GenericPersistenciaException {
 
 
 
-        if(idTarefa == null) {
+        if(idTask == null) {
             throw new GenericPersistenciaException("O Id de Tarefa deve ser informado");
         }
 
         try {
 
-            delete(idTarefa);
+            delete(idTask);
             getEntityManager().flush();
 
         } catch (Exception e) {
@@ -73,30 +76,43 @@ public class TarefaDAO extends PersistenciaDao<Tarefa> {
         }
     }
 
-    public List<Tarefa> list() throws GenericPersistenciaException {
+    public List<Task> list(FilterTask filterTask) throws GenericPersistenciaException {
 
         try {
 
-            return findAll();
+            StringBuilder hql = new StringBuilder().append("SELECT t FROM Task t ")
+                    .append(" WHERE 1 = 1 ");
+            if(filterTask != null){
+                hql.append(" AND t.user.id = :idUser ");
+            }
+
+
+            Query query = getEntityManager().createQuery(hql.toString());
+            if(filterTask != null){
+                query.setParameter("idUser", filterTask.getIdUser());
+            }
+
+            return query.getResultList();
 
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getLocalizedMessage());
             throw new GenericPersistenciaException(e.getLocalizedMessage());
         }
     }
 
-    public Tarefa findTarefaById(Integer idTarefa) throws GenericPersistenciaException {
+    public Task findTaskById(Integer idTask) throws GenericPersistenciaException {
 
         try {
 
-            return findById(idTarefa);
+            return findById(idTask);
 
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getLocalizedMessage());
             throw new GenericPersistenciaException(e.getLocalizedMessage());
         }
 
     }
-
 
 }

@@ -9,21 +9,21 @@
     <changeSet id="1.0.0" author="Eduardo Trentin">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="USUARIOS"/>
+                <tableExists tableName="USER_TASK"/>
             </not>
         </preConditions>
-        <comment>Padrão para arquitetura de API - Tabela Usuario</comment>
+        <comment>Padrão para arquitetura de API - Tabela USER_TASK</comment>
         <sql>
-            CREATE TABLE USUARIOS (
-            CD_USUARIO  NUMBER(10,0) NOT NULL ,
-            NM_USUARIO VARCHAR(50),
-            DS_SENHA VARCHAR(30),
-            PRIMARY KEY (CD_USUARIO)
+            CREATE TABLE USER_TASK (
+            CD_USER  NUMBER(10,0) NOT NULL ,
+            NM_USER_TASK VARCHAR(50),
+            DS_EMAIL VARCHAR(50),
+            PRIMARY KEY (CD_USER)
             );
         </sql>
         <rollback>
             <sql>
-                DROP TABLE USUARIOS;
+                DROP TABLE USER_TASK;
             </sql>
         </rollback>
     </changeSet>
@@ -31,20 +31,20 @@
     <changeSet id="1.0.1" author="Eduardo Trentin">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="TAREFAS"/>
+                <tableExists tableName="TASK"/>
             </not>
         </preConditions>
         <comment>Padrão para arquitetura de API - Tabela </comment>
         <sql>
-            CREATE TABLE TAREFAS (
-            CD_TAREFA NUMBER(10,0) NOT NULL ,
-            DS_TAREFA VARCHAR(255),
-            PRIMARY KEY (CD_TAREFA)
+            CREATE TABLE TASK (
+            CD_TASK NUMBER(10,0) NOT NULL ,
+            DS_TASK VARCHAR(255),
+            PRIMARY KEY (CD_TASK)
             );
         </sql>
         <rollback>
             <sql>
-                DROP TABLE TAREFAS;
+                DROP TABLE TASK;
             </sql>
         </rollback>
     </changeSet>
@@ -52,12 +52,12 @@
     <changeSet id="1.0.2" author="Eduardo Trentin">
         <preConditions onFail="MARK_RAN">
             <not>
-                <sequenceExists sequenceName="SEQ_TAREFA"/>
+                <sequenceExists sequenceName="SEQ_TASK"/>
             </not>
         </preConditions>
         <comment>Padrão para arquitetura de API</comment>
         <sql>
-            CREATE SEQUENCE SEQ_TAREFA
+            CREATE SEQUENCE SEQ_TASK
             MINVALUE 1
             MAXVALUE 9999999999999999999999999999
             START WITH 1
@@ -67,7 +67,7 @@
         </sql>
         <rollback>
             <sql>
-                DROP SEQUENCE SEQ_TAREFA;
+                DROP SEQUENCE SEQ_TASK;
             </sql>
         </rollback>
     </changeSet>
@@ -75,12 +75,12 @@
     <changeSet id="1.0.3" author="Eduardo Trentin">
         <preConditions onFail="MARK_RAN">
             <not>
-                <sequenceExists sequenceName="SEQ_USUARIOS"/>
+                <sequenceExists sequenceName="SEQ_USER_TASK"/>
             </not>
         </preConditions>
         <comment>Padrão para arquitetura de API</comment>
         <sql>
-            CREATE SEQUENCE SEQ_USUARIOS
+            CREATE SEQUENCE SEQ_USER_TASK
             MINVALUE 1
             MAXVALUE 9999999999999999999999999999
             START WITH 1
@@ -90,7 +90,7 @@
         </sql>
         <rollback>
             <sql>
-                DROP SEQUENCE SEQ_USUARIOS;
+                DROP SEQUENCE SEQ_USER_TASK;
             </sql>
         </rollback>
     </changeSet>
