@@ -16,7 +16,7 @@
         <sql>
             CREATE TABLE USER_TASK (
             CD_USER  NUMBER(10,0) NOT NULL ,
-            NM_USER_TASK VARCHAR(50),
+            NM_USER VARCHAR(50),
             DS_EMAIL VARCHAR(50),
             PRIMARY KEY (CD_USER)
             );

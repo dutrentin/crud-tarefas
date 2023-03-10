@@ -107,4 +107,12 @@ public class Task implements Serializable {
     public void setTotalSize(int totalSize) {
         this.totalSize = totalSize;
     }
+
+    public Date getDateTask() {
+        return dateTask;
+    }
+
+    public void setDateTask(Date dateTask) {
+        this.dateTask = dateTask;
+    }
 }

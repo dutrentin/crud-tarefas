@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name="USUARIOS")
+@Table(name="USER_TASK")
 public class User implements Serializable {
 
     private static final long serialVersionUID = -8708992676310095432L;

@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
 import java.io.IOException;
 import java.net.URI;
 import java.text.ParseException;
@@ -23,18 +25,18 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tarefas")
+@RequestMapping(path = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 public class TaskController {
 
     private static final Logger log = Logger.getLogger(TaskController.class);
 
     @Autowired
-    private TaskService tarefaService;
+    private TaskService taskService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ResponseEntity<List<Task>> getTarefas() throws IOException, BiffException {
-        return ResponseEntity.status(HttpStatus.OK).body(tarefaService.listar(null));
+    public ResponseEntity<List<Task>> getTasks() throws IOException, BiffException {
+        return ResponseEntity.status(HttpStatus.OK).body(taskService.list(null));
     }
 
     @GetMapping("/{max}/{page}/{idUsuario}/{filterTitle}/{filterStatus}/{creationDate}/{conclusionDate}/{orderBy}")
@@ -45,11 +47,11 @@ public class TaskController {
                                                    @PathVariable("creationDate") String creationDate, @PathVariable("conclusionDate") String conclusionDate,
                                                    @PathVariable("orderBy") String orderBy) throws ParseException {
 
-        FilterTask filtroTarefa = new FilterTask();
+        FilterTask filterTask = new FilterTask();
 
-        preencheFiltro(maxResults, page, filterTitle, filterStatus, creationDate, orderBy, idUsuario, filtroTarefa );
+        preencheFiltro(maxResults, page, filterTitle, filterStatus, creationDate, orderBy, idUsuario, filterTask );
 
-        return ResponseEntity.status(HttpStatus.OK).body(tarefaService.listar(filtroTarefa));
+        return ResponseEntity.status(HttpStatus.OK).body(taskService.list(filterTask));
 
     }
 
@@ -96,13 +98,19 @@ public class TaskController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Task> getTarefas(@PathVariable Integer id) throws IOException, BiffException {
-        return ResponseEntity.status(HttpStatus.OK).body(tarefaService.findTarefaById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(taskService.findTaskById(id));
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> salvar(@RequestBody Task tarefa) {
 
-        this.tarefaService.salvar(tarefa);
+    @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @Produces("application/json")
+    @Consumes("application/json")
+    public ResponseEntity<Void> save(@RequestBody TaskDTO task) {
+        Task newTask = new Task();
+        newTask.setDescriptionTask(task.getDescription());
+
+        this.taskService.save(newTask);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand("").toUri();
@@ -116,7 +124,7 @@ public class TaskController {
     public void alterar(@RequestBody Task tarefa){
 
         try {
-            this.tarefaService.alterar(tarefa);
+            this.taskService.update(tarefa);
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
             throw new GenericPersistenciaException(e.getLocalizedMessage());
@@ -128,7 +136,7 @@ public class TaskController {
     public void remover(@PathVariable Integer id){
 
         try {
-            this.tarefaService.remover(id);
+            this.taskService.remove(id);
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
             throw new GenericPersistenciaException(e.getLocalizedMessage());

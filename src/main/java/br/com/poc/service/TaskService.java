@@ -2,6 +2,7 @@ package br.com.poc.service;
 
 import br.com.poc.dao.TaskDAO;
 import br.com.poc.entidade.Task;
+import br.com.poc.entidade.User;
 import br.com.poc.exception.GenericPersistenciaException;
 import br.com.poc.util.FilterTask;
 import org.apache.log4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Service("taskService")
@@ -21,13 +23,12 @@ public class TaskService implements Serializable {
     private static final Logger log = Logger.getLogger(TaskService.class);
 
     @Autowired
-    private TaskDAO tarefaDAO;
+    private TaskDAO taskDAO;
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void salvar(Task tarefa) throws GenericPersistenciaException {
+    public void save(Task task) throws GenericPersistenciaException {
         try {
-            this.tarefaDAO.save(tarefa);
-            System.out.println("Salvou " + tarefa.getDescriptionTask());
+            this.taskDAO.save(task);
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getLocalizedMessage() + this.getClass().getName()+ " erro ao salvar");
@@ -43,7 +44,7 @@ public class TaskService implements Serializable {
      */
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void alterar(Task tarefa) throws GenericPersistenciaException {
+    public void update(Task task) throws GenericPersistenciaException {
 
         try {
 
@@ -51,7 +52,7 @@ public class TaskService implements Serializable {
             //preencheTipoBebida(bebidaDTO, bebida);
             //bebida.setDescricaoBebida(bebidaDTO.getNome());
 
-            this.tarefaDAO.update(tarefa);
+            this.taskDAO.update(task);
 
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
@@ -69,10 +70,10 @@ public class TaskService implements Serializable {
      */
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void remover(Integer idTarefa) throws GenericPersistenciaException {
+    public void remove(Integer idTask) throws GenericPersistenciaException {
 
         try {
-            this.tarefaDAO.remove(idTarefa);
+            this.taskDAO.remove(idTask);
 
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
@@ -90,20 +91,21 @@ public class TaskService implements Serializable {
      * @param Tarefa
      */
 
-    public List<Task> listar(FilterTask filtroTarefa) throws GenericPersistenciaException {
-        /*Tarefa tarefa = new Tarefa();
-        tarefa.setAtivo(Boolean.TRUE);
-        tarefa.setDataCriacao(new Date());
-        tarefa.setDataConclusao(new Date());
-        tarefa.setDescricaoTarefa("Levar o lixo");
-        tarefa.setUsuario(new Usuario(2,"dutrentin","teste"));
-        tarefaDAO.salvar(tarefa);
-        tarefaDAO.findAll();
-         */
+    public List<Task> list(FilterTask filterTask) throws GenericPersistenciaException {
+        Task task = new Task();
+        task.setActive(Boolean.TRUE);
+        task.setDateConclusionTask(new Date());
+        task.setDateCreationTask(new Date());
+        task.setDateTask(new Date());
+        task.setDescriptionTask("Levar o lixo");
+        task.setUser(new User(1,"eduardo.trentin","teste"));
+        taskDAO.save(task);
+        taskDAO.findAll();
+
 
         try {
-            List<Task> retorno = this.tarefaDAO.list(filtroTarefa);
-            return  retorno;
+            List<Task> returnList = this.taskDAO.list(filterTask);
+            return  returnList;
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
             e.printStackTrace();
@@ -119,11 +121,11 @@ public class TaskService implements Serializable {
      * @param Tarefa
      */
 
-    public Task findTarefaById(Integer idTarefa) throws GenericPersistenciaException {
+    public Task findTaskById(Integer idTask) throws GenericPersistenciaException {
 
         try {
 
-            return this.tarefaDAO.findTaskById(idTarefa);
+            return this.taskDAO.findTaskById(idTask);
 
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());

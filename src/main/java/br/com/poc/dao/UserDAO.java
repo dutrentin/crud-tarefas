@@ -82,8 +82,7 @@ public class UserDAO extends PersistenciaDao<User> {
 
         try {
 
-            StringBuilder hql = new StringBuilder().append("SELECT t FROM User t ")
-                    .append(" WHERE 1 = 1 ");
+            StringBuilder hql = new StringBuilder().append("SELECT u FROM User u ");
 
 
             Query query = getEntityManager().createQuery(hql.toString());
