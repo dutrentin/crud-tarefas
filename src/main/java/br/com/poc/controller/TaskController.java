@@ -144,7 +144,7 @@ public class TaskController {
     }
 
 
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ApiOperation(value = "Altera os dados da entidade Tarefa")
     public void updateTask(@RequestBody Task tarefa){
 

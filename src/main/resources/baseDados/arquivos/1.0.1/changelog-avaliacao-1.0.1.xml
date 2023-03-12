@@ -37,17 +37,17 @@
     </changeSet>
 
     <changeSet id="1.0.1.2" author="Eduardo Trentin">
-        <preConditions onFail="MARK_RAN" onFailMessage="Erro ao adicionar coluna FG_ATIVO na tabela TASK">
+        <preConditions onFail="MARK_RAN" onFailMessage="Erro ao adicionar coluna FG_ACTIVE na tabela TASK">
             <not>
-                <columnExists tableName="TASK" columnName="FG_ATIVO" />
+                <columnExists tableName="TASK" columnName="FG_ACTIVE" />
             </not>
         </preConditions>
-        <comment>Adicionar coluna 'FG_ATIVO' na tabela 'TASK'</comment>
+        <comment>Adicionar coluna 'FG_ACTIVE' na tabela 'TASK'</comment>
         <addColumn tableName="TASK" >
-            <column name="FG_ATIVO" valueNumeric="1" type="NUMBER(1,0)"/>
+            <column name="FG_ACTIVE" valueNumeric="1" type="NUMBER(1,0)"/>
         </addColumn>
         <rollback>
-            ALTER TABLE TASK DROP COLUMN FG_ATIVO;
+            ALTER TABLE TASK DROP COLUMN FG_ACTIVE;
         </rollback>
     </changeSet>
 

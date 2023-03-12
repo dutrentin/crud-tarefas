@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name="PERSON")
 public class Person implements Serializable {
 
-    private static final long serialVersionUID = -8708992676310095432L;
+    private static final long serialVersionUID =  1L;
 
     @Id
     @Column(name = "CD_PERSON")
@@ -21,7 +21,7 @@ public class Person implements Serializable {
     @Column(name="NM_PERSON", length = 50)
     private String name;
 
-    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Task> tasks;
 
     @Column(name="DS_EMAIL", length = 30)

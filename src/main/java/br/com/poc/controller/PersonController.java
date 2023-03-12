@@ -90,9 +90,11 @@ public class PersonController {
     }
      */
 
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    @ApiOperation(value = "Altera os dados da entidade Tarefa")
-    public void updateTask(@RequestBody Person person){
+    @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @Produces("application/json")
+    @Consumes("application/json")
+    public void updatePerson(@RequestBody Person person){
 
         try {
             this.personService.update(person);
@@ -104,7 +106,7 @@ public class PersonController {
 
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
     @ApiOperation(value = "Remove os dados da entidade Tarefa")
-    public void removeTask(@PathVariable Integer id){
+    public void removePerson(@PathVariable Integer id){
 
         try {
             this.personService.remove(id);

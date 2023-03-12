@@ -16,7 +16,7 @@ import java.util.List;
 @Qualifier("taskDAO")
 public class TaskDAO extends PersistenciaDao<Task> {
 
-    private static final long serialVersionUID = 6644637152890772203L;
+    private static final long serialVersionUID = 6625637152890772203L;
 
     private static final Logger log = Logger.getLogger(TaskDAO.class);
 
@@ -81,16 +81,17 @@ public class TaskDAO extends PersistenciaDao<Task> {
         try {
 
             StringBuilder hql = new StringBuilder().append("SELECT t FROM Task t ")
+                    //.append(" join t.person p ")
                     .append(" WHERE 1 = 1 ");
-            if(filterTask != null){
-                hql.append(" AND t.person.id = :idPerson ");
-            }
+            //if(filterTask != null){
+              //  hql.append(" AND p.id = :idPerson ");
+            //}
 
 
             Query query = getEntityManager().createQuery(hql.toString());
-            if(filterTask != null){
-                query.setParameter("idPerson", filterTask.getIdPerson());
-            }
+            //if(filterTask != null){
+                //query.setParameter("idPerson", filterTask.getIdPerson());
+            //}
 
             return query.getResultList();
 

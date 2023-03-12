@@ -8,10 +8,10 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "TAREFAS")
+@Table(name = "TASK")
 public class Task implements Serializable {
 
-    private static final long serialVersionUID = -8708992676317665432L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "CD_TASK")
@@ -40,14 +40,8 @@ public class Task implements Serializable {
     private Boolean active;
 
     @JoinColumn(name = "CD_PERSON", referencedColumnName = "CD_PERSON")
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne
     private Person person;
-
-    @Transient
-    private List<Task> tasks;
-
-    @Transient
-    private int totalSize;
 
     public Integer getId() {
         return id;
@@ -87,22 +81,6 @@ public class Task implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    public int getTotalSize() {
-        return totalSize;
-    }
-
-    public void setTotalSize(int totalSize) {
-        this.totalSize = totalSize;
     }
 
     public Date getDateTask() {
