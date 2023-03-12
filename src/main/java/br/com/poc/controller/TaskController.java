@@ -141,6 +141,7 @@ public class TaskController {
         newTask.setDateTask(task.getDateTask());
         newTask.setDateCreationTask(new Date());
         newTask.setTitleTask(task.getTitle());
+        newTask.setPerson(task.getPerson());
     }
 
 

@@ -41,7 +41,8 @@ public class Task implements Serializable {
 
     @JoinColumn(name = "CD_PERSON", referencedColumnName = "CD_PERSON")
     @ManyToOne
-    private Person person;
+    private Person person
+            ;
 
     public Integer getId() {
         return id;

@@ -1,5 +1,7 @@
 package br.com.poc.dto;
 
+import br.com.poc.entidade.Person;
+
 import java.util.Date;
 
 public class TaskDTO {
@@ -10,6 +12,7 @@ public class TaskDTO {
     private Date creationDate;
     private Date dateTask;
     private Date dateConclusion;
+    private Person person;
 
     public Integer getId() {
         return id;
@@ -67,5 +70,11 @@ public class TaskDTO {
         this.dateConclusion = dateConclusion;
     }
 
+    public Person getPerson() {
+        return person;
+    }
 
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 }
