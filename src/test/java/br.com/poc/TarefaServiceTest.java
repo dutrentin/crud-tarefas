@@ -2,7 +2,7 @@ package br.com.poc;
 
 import br.com.poc.dao.TaskDAO;
 import br.com.poc.entidade.Task;
-import br.com.poc.entidade.User;
+import br.com.poc.entidade.Person;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -25,8 +25,8 @@ class TarefaServiceTest {
         tarefa.setDateCreationTask(new Date());
         tarefa.setDateConclusionTask(new Date());
         tarefa.setDescriptionTask("Levar o lixo");
-        tarefa.setUser(new User(1,"dutrentin","teste"));
-        tarefaDAO.save(tarefa);
+        tarefa.setPerson(new Person(1,"dutrentin","teste"));
+        tarefaDAO.saveTask(tarefa);
         tarefaDAO.findAll();
         //assertEquals(1, tarefaDAO.findAll().size());
     }

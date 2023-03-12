@@ -1,8 +1,7 @@
 package br.com.poc.dao;
 
-import br.com.poc.entidade.User;
+import br.com.poc.entidade.Person;
 import br.com.poc.exception.GenericPersistenciaException;
-import br.com.poc.util.FilterUser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -13,23 +12,23 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Repository
-@Qualifier("userDAO")
-public class UserDAO extends PersistenciaDao<User> {
+@Qualifier("personDAO")
+public class PersonDAO extends PersistenciaDao<Person> {
 
-    private static final long serialVersionUID = 6644637152890772203L;
+    private static final long serialVersionUID = 6644637442890772203L;
 
-    private static final Logger log = Logger.getLogger(UserDAO.class);
+    private static final Logger log = Logger.getLogger(PersonDAO.class);
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void save(User user) throws GenericPersistenciaException {
+    public void savePerson(Person person) throws GenericPersistenciaException {
 
-        if(user == null) {
-            throw new GenericPersistenciaException("Usuário deve ser preenchido");
+        if(person == null) {
+            throw new GenericPersistenciaException("Pessoa deve ser preenchido");
         }
 
         try {
 
-            save(user);
+            save(person);
             getEntityManager().flush();
 
         } catch (Exception e) {
@@ -40,15 +39,15 @@ public class UserDAO extends PersistenciaDao<User> {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void update(User user) throws GenericPersistenciaException {
+    public void updatePerson(Person person) throws GenericPersistenciaException {
 
-        if(user == null) {
-            throw new GenericPersistenciaException("Usuário deve ser preenchido");
+        if(person == null) {
+            throw new GenericPersistenciaException("Pessoa deve ser preenchido");
         }
 
         try {
 
-            update(user);
+            update(person);
             getEntityManager().flush();
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,17 +57,17 @@ public class UserDAO extends PersistenciaDao<User> {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void remove(Integer idUser) throws GenericPersistenciaException {
+    public void removePerson(Integer idPerson) throws GenericPersistenciaException {
 
 
 
-        if(idUser == null) {
-            throw new GenericPersistenciaException("O Id de Usuário deve ser informado");
+        if(idPerson == null) {
+            throw new GenericPersistenciaException("O Id de Pessoa deve ser informado");
         }
 
         try {
 
-            delete(idUser);
+            delete(idPerson);
             getEntityManager().flush();
 
         } catch (Exception e) {
@@ -78,11 +77,11 @@ public class UserDAO extends PersistenciaDao<User> {
         }
     }
 
-    public List<User> list() throws GenericPersistenciaException {
+    public List<Person> list() throws GenericPersistenciaException {
 
         try {
 
-            StringBuilder hql = new StringBuilder().append("SELECT u FROM User u ");
+            StringBuilder hql = new StringBuilder().append("SELECT p FROM Person p ");
 
 
             Query query = getEntityManager().createQuery(hql.toString());
@@ -95,11 +94,11 @@ public class UserDAO extends PersistenciaDao<User> {
         }
     }
 
-    public User findUserById(Integer idUser) throws GenericPersistenciaException {
+    public Person findPersonById(Integer idPerson) throws GenericPersistenciaException {
 
         try {
 
-            return findById(idUser);
+            return findById(idPerson);
 
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());

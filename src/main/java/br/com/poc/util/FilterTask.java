@@ -7,7 +7,7 @@ public class FilterTask implements Serializable {
 
     private static final long serialVersionUID = 7833360363674843256L;
 
-    private Integer idUser;
+    private Integer idPerson;
     private String descriptionFilter;
     private Boolean filterStatus;
     private Date dateCreation;
@@ -73,12 +73,12 @@ public class FilterTask implements Serializable {
         this.order = order;
     }
 
-    public Integer getIdUser() {
-        return idUser;
+    public Integer getIdPerson() {
+        return idPerson;
     }
 
-    public void setIdUser(Integer idUser) {
-        this.idUser = idUser;
+    public void setIdPerson(Integer idPerson) {
+        this.idPerson = idPerson;
     }
 
     public Boolean getFilterStatus() {

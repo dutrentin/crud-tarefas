@@ -21,7 +21,7 @@ public class TaskDAO extends PersistenciaDao<Task> {
     private static final Logger log = Logger.getLogger(TaskDAO.class);
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void save(Task task) throws GenericPersistenciaException {
+    public void saveTask(Task task) throws GenericPersistenciaException {
 
         if(task == null) {
             throw new GenericPersistenciaException("Tarefa deve ser preenchido");
@@ -40,7 +40,7 @@ public class TaskDAO extends PersistenciaDao<Task> {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void update(Task task) throws GenericPersistenciaException {
+    public void updateTask(Task task) throws GenericPersistenciaException {
 
         if(task == null) {
             throw new GenericPersistenciaException("Tarefa deve ser preenchido");
@@ -57,7 +57,7 @@ public class TaskDAO extends PersistenciaDao<Task> {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void remove(Integer idTask) throws GenericPersistenciaException {
+    public void removeTask(Integer idTask) throws GenericPersistenciaException {
 
 
 
@@ -83,13 +83,13 @@ public class TaskDAO extends PersistenciaDao<Task> {
             StringBuilder hql = new StringBuilder().append("SELECT t FROM Task t ")
                     .append(" WHERE 1 = 1 ");
             if(filterTask != null){
-                hql.append(" AND t.user.id = :idUser ");
+                hql.append(" AND t.person.id = :idPerson ");
             }
 
 
             Query query = getEntityManager().createQuery(hql.toString());
             if(filterTask != null){
-                query.setParameter("idUser", filterTask.getIdUser());
+                query.setParameter("idPerson", filterTask.getIdPerson());
             }
 
             return query.getResultList();

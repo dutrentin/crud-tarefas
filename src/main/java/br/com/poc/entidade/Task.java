@@ -19,8 +19,12 @@ public class Task implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_TASK")
     private Integer id;
 
-    @Column(name = "DS_TASK", length = 255)
+    @Column(name = "DS_TITLE", length = 255)
+    private String titleTask;
+
+    @Column(name = "DS_TASK", length = 1500)
     private String descriptionTask;
+
 
     @Column(name = "DT_CREATION", nullable = false, length = 10)
     private Date dateCreationTask;
@@ -28,19 +32,20 @@ public class Task implements Serializable {
     @Column(name = "DT_TASK", nullable = false, length = 10)
     private Date dateTask;
 
-    @Column(name = "DT_CONCLUSION", nullable = false, length = 10)
+    @Column(name = "DT_CONCLUSION", length = 10)
     private Date dateConclusionTask;
 
     @Column(name = "FG_ACTIVE", length = 1, nullable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean active;
 
-    @JoinColumn(name = "CD_USER", referencedColumnName = "CD_USER")
-    @ManyToOne(targetEntity = User.class)
-    private User user;
+    @JoinColumn(name = "CD_PERSON", referencedColumnName = "CD_PERSON")
+    @ManyToOne(targetEntity = Person.class)
+    private Person person;
 
     @Transient
     private List<Task> tasks;
+
     @Transient
     private int totalSize;
 
@@ -84,14 +89,6 @@ public class Task implements Serializable {
         this.active = active;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public List<Task> getTasks() {
         return tasks;
     }
@@ -114,5 +111,21 @@ public class Task implements Serializable {
 
     public void setDateTask(Date dateTask) {
         this.dateTask = dateTask;
+    }
+
+    public String getTitleTask() {
+        return titleTask;
+    }
+
+    public void setTitleTask(String titleTask) {
+        this.titleTask = titleTask;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

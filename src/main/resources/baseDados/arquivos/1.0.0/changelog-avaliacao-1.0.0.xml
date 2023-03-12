@@ -9,21 +9,21 @@
     <changeSet id="1.0.0" author="Eduardo Trentin">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="USER_TASK"/>
+                <tableExists tableName="PERSON"/>
             </not>
         </preConditions>
-        <comment>Padrão para arquitetura de API - Tabela USER_TASK</comment>
+        <comment>Padrão para arquitetura de API - Tabela PERSON</comment>
         <sql>
-            CREATE TABLE USER_TASK (
-            CD_USER  NUMBER(10,0) NOT NULL ,
-            NM_USER VARCHAR(50),
-            DS_EMAIL VARCHAR(50),
-            PRIMARY KEY (CD_USER)
+            CREATE TABLE PERSON (
+            CD_PERSON  NUMBER(10,0) NOT NULL ,
+            NM_PERSON VARCHAR(50),
+            DS_EMAIL VARCHAR(100),
+            PRIMARY KEY (CD_PERSON)
             );
         </sql>
         <rollback>
             <sql>
-                DROP TABLE USER_TASK;
+                DROP TABLE PERSON;
             </sql>
         </rollback>
     </changeSet>
@@ -38,8 +38,11 @@
         <sql>
             CREATE TABLE TASK (
             CD_TASK NUMBER(10,0) NOT NULL ,
-            DS_TASK VARCHAR(255),
-            PRIMARY KEY (CD_TASK)
+            CD_PERSON  NUMBER(10,0) NOT NULL ,
+            DS_TASK VARCHAR(2000),
+            PRIMARY KEY (CD_TASK),
+            CONSTRAINT FK_TASK_REF_PERSON FOREIGN KEY (CD_PERSON)
+            REFERENCES PERSON(CD_PERSON)
             );
         </sql>
         <rollback>
@@ -75,12 +78,12 @@
     <changeSet id="1.0.3" author="Eduardo Trentin">
         <preConditions onFail="MARK_RAN">
             <not>
-                <sequenceExists sequenceName="SEQ_USER_TASK"/>
+                <sequenceExists sequenceName="SEQ_PERSON"/>
             </not>
         </preConditions>
         <comment>Padrão para arquitetura de API</comment>
         <sql>
-            CREATE SEQUENCE SEQ_USER_TASK
+            CREATE SEQUENCE SEQ_PERSON
             MINVALUE 1
             MAXVALUE 9999999999999999999999999999
             START WITH 1
@@ -90,7 +93,7 @@
         </sql>
         <rollback>
             <sql>
-                DROP SEQUENCE SEQ_USER_TASK;
+                DROP SEQUENCE SEQ_PERSON;
             </sql>
         </rollback>
     </changeSet>

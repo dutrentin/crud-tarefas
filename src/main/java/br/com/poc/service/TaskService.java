@@ -1,9 +1,12 @@
 package br.com.poc.service;
 
 import br.com.poc.dao.TaskDAO;
+import br.com.poc.dto.TaskDTO;
+import br.com.poc.dto.TaskTransferDTO;
 import br.com.poc.entidade.Task;
-import br.com.poc.entidade.User;
+import br.com.poc.entidade.Person;
 import br.com.poc.exception.GenericPersistenciaException;
+import br.com.poc.util.CastTaskDTO;
 import br.com.poc.util.FilterTask;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +29,9 @@ public class TaskService implements Serializable {
     private TaskDAO taskDAO;
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void save(Task task) throws GenericPersistenciaException {
+    public void saveTask(Task task) throws GenericPersistenciaException {
         try {
-            this.taskDAO.save(task);
+            this.taskDAO.saveTask(task);
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getLocalizedMessage() + this.getClass().getName()+ " erro ao salvar");
@@ -73,7 +76,7 @@ public class TaskService implements Serializable {
     public void remove(Integer idTask) throws GenericPersistenciaException {
 
         try {
-            this.taskDAO.remove(idTask);
+            this.taskDAO.removeTask(idTask);
 
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
@@ -91,21 +94,33 @@ public class TaskService implements Serializable {
      * @param Tarefa
      */
 
-    public List<Task> list(FilterTask filterTask) throws GenericPersistenciaException {
-        Task task = new Task();
-        task.setActive(Boolean.TRUE);
-        task.setDateConclusionTask(new Date());
-        task.setDateCreationTask(new Date());
-        task.setDateTask(new Date());
-        task.setDescriptionTask("Levar o lixo");
-        task.setUser(new User(1,"eduardo.trentin","teste"));
-        taskDAO.save(task);
+    public TaskTransferDTO list(FilterTask filterTask) throws GenericPersistenciaException {
+
+        /*Task task2 = new Task();
+        task2.setActive(Boolean.TRUE);
+        task2.setDateConclusionTask(new Date());
+        task2.setDateCreationTask(new Date());
+        task2.setDateTask(new Date());
+        task2.setDescriptionTask("Levar o lixo");
+        task2.setPerson(new Person(9,"eduardo.trentin","teste"));
+        taskDAO.saveTask(task2);
         taskDAO.findAll();
+         */
 
-
+        TaskTransferDTO taskTransferDTO = new TaskTransferDTO();
         try {
             List<Task> returnList = this.taskDAO.list(filterTask);
-            return  returnList;
+            if(!returnList.isEmpty()){
+                for(Task task : returnList){
+                    TaskDTO taskDTO = new TaskDTO();
+                    taskDTO = CastTaskDTO.castTaskToTaskDTO(task);
+                    taskTransferDTO.getTasks().add(taskDTO);
+
+                }
+                taskTransferDTO.setTotal(returnList.size());
+            }
+
+            return  taskTransferDTO;
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
             e.printStackTrace();

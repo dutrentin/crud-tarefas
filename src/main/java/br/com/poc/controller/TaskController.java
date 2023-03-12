@@ -1,9 +1,11 @@
 package br.com.poc.controller;
 
 import br.com.poc.dto.TaskDTO;
+import br.com.poc.dto.TaskTransferDTO;
 import br.com.poc.entidade.Task;
 import br.com.poc.exception.GenericPersistenciaException;
 import br.com.poc.service.TaskService;
+import br.com.poc.util.CastTaskDTO;
 import br.com.poc.util.FilterTask;
 import io.swagger.annotations.ApiOperation;
 import jxl.read.biff.BiffException;
@@ -20,7 +22,6 @@ import javax.ws.rs.Produces;
 import java.io.IOException;
 import java.net.URI;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,10 +35,11 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity<List<Task>> getTasks() throws IOException, BiffException {
         return ResponseEntity.status(HttpStatus.OK).body(taskService.list(null));
     }
+
 
     @GetMapping("/{max}/{page}/{idUsuario}/{filterTitle}/{filterStatus}/{creationDate}/{conclusionDate}/{orderBy}")
     @ResponseBody
@@ -54,32 +56,46 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(taskService.list(filterTask));
 
     }
+     */
 
-    @GetMapping(value = "/findAll/{max}/{page}/{idUsuario}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/findAll/{max}/{page}/{idPerson}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<List<TaskDTO>> findAlltasks2(@PathVariable("max") int maxResults, @PathVariable("page") int page,
-                                                      @PathVariable("idUsuario") int idUsuario) throws ParseException {
+    public ResponseEntity<TaskTransferDTO> findAlltasks2(@PathVariable("max") int maxResults, @PathVariable("page") int page,
+                                                      @PathVariable("idPerson") int idPerson) throws ParseException {
 
+        TaskTransferDTO taskTransferDTO = new TaskTransferDTO();
+
+        FilterTask filterTask = new FilterTask();
+
+        setFilters(maxResults, page, idPerson, filterTask);
+
+        taskTransferDTO =  this.taskService.list(filterTask);
+
+        //criaRetornoFake(taskTransferDTO);
+
+        //preencheFiltro(maxResults, page, filterTitle, filterStatus, creationDate, orderBy, filtroTarefa);
+
+        return ResponseEntity.status(HttpStatus.OK).body(taskTransferDTO);
+
+    }
+
+    private void setFilters(@PathVariable("max") int maxResults, @PathVariable("page") int page, @PathVariable("idPerson") int idPerson, FilterTask filterTask) {
+        filterTask.setIdPerson(idPerson);
+        filterTask.setMaxResults(maxResults);
+        filterTask.setCurrentPage(page);
+    }
+
+    private void criaRetornoFake(TaskTransferDTO taskTransferDTO) {
         TaskDTO task = new TaskDTO();
         task.setCreationDate(new Date());
         task.setDateConclusion(new Date());
         task.setStatus(true);
-        task.setId(10L);
+        task.setId(10);
         task.setDescription("Teste de tarefa");
         task.setTitle("Tarefa teste");
 
-        List<TaskDTO> lista = new ArrayList<>();
-        lista.add(task);
-
-        FilterTask filtroTarefa = new FilterTask();
-        filtroTarefa.setIdUser(idUsuario);
-        filtroTarefa.setMaxResults(maxResults);
-        filtroTarefa.setCurrentPage(page);
-
-        //preencheFiltro(maxResults, page, filterTitle, filterStatus, creationDate, orderBy, filtroTarefa);
-
-        return ResponseEntity.status(HttpStatus.OK).body(lista);
-
+        taskTransferDTO.getTasks().add(task);
+        taskTransferDTO.setTotal(1);
     }
 
     private void preencheFiltro( int maxResults,  int page,
@@ -93,7 +109,7 @@ public class TaskController {
         //filtroTarefa.setDataConclusao(creationDate);
         filtroTarefa.setDescriptionFilter(filterTitle);
         filtroTarefa.setFilterStatus(filterStatus);
-        filtroTarefa.setIdUser(idUsuario);
+        filtroTarefa.setIdPerson(idUsuario);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -108,9 +124,10 @@ public class TaskController {
     @Consumes("application/json")
     public ResponseEntity<Void> save(@RequestBody TaskDTO task) {
         Task newTask = new Task();
-        newTask.setDescriptionTask(task.getDescription());
 
-        this.taskService.save(newTask);
+        completeFields(task, newTask);
+
+        this.taskService.saveTask(newTask);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand("").toUri();
@@ -118,10 +135,18 @@ public class TaskController {
         return ResponseEntity.created(uri).build();
     }
 
+    private void completeFields(TaskDTO task, Task newTask) {
+        newTask.setDescriptionTask(task.getDescription());
+        newTask.setActive(task.isStatus());
+        newTask.setDateTask(task.getDateTask());
+        newTask.setDateCreationTask(new Date());
+        newTask.setTitleTask(task.getTitle());
+    }
 
-    @RequestMapping(value = "/alterar/{id}", method = RequestMethod.PUT)
+
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     @ApiOperation(value = "Altera os dados da entidade Tarefa")
-    public void alterar(@RequestBody Task tarefa){
+    public void updateTask(@RequestBody Task tarefa){
 
         try {
             this.taskService.update(tarefa);
@@ -131,9 +156,9 @@ public class TaskController {
         }
     }
 
-    @RequestMapping(value = "/remover/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
     @ApiOperation(value = "Remove os dados da entidade Tarefa")
-    public void remover(@PathVariable Integer id){
+    public void removeTask(@PathVariable Integer id){
 
         try {
             this.taskService.remove(id);

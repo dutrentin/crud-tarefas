@@ -3,19 +3,19 @@ package br.com.poc.dto;
 import java.util.Date;
 
 public class TaskDTO {
-    private Long id;
+    private Integer id;
     private String title;
     private boolean status;
     private String description;
     private Date creationDate;
-    private Date dateLastEdited;
+    private Date dateTask;
     private Date dateConclusion;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -47,16 +47,16 @@ public class TaskDTO {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    public void setCreationDate(Date dateTask) {
+        this.dateTask = dateTask;
     }
 
-    public Date getDateLastEdited() {
-        return dateLastEdited;
+    public Date getDateTask() {
+        return dateTask;
     }
 
-    public void setDateLastEdited(Date dateLastEdited) {
-        this.dateLastEdited = dateLastEdited;
+    public void setDateTask(Date dateTask) {
+        this.dateTask = dateTask;
     }
 
     public Date getDateConclusion() {
@@ -66,4 +66,6 @@ public class TaskDTO {
     public void setDateConclusion(Date dateConclusion) {
         this.dateConclusion = dateConclusion;
     }
+
+
 }

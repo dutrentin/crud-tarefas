@@ -37,21 +37,6 @@
     </changeSet>
 
     <changeSet id="1.0.1.2" author="Eduardo Trentin">
-        <preConditions onFail="MARK_RAN" onFailMessage="Erro ao adicionar coluna DT_CONCLUSION na tabela TASK">
-            <not>
-                <columnExists tableName="TASK" columnName="DT_CONCLUSION" />
-            </not>
-        </preConditions>
-        <comment>Adicionar coluna 'DT_CONCLUSION' na tabela 'TASK'</comment>
-        <addColumn tableName="TASK" >
-            <column name="DT_CONCLUSION" type="DATE"/>
-        </addColumn>
-        <rollback>
-            ALTER TABLE TASK DROP COLUMN DT_CONCLUSION;
-        </rollback>
-    </changeSet>
-
-    <changeSet id="1.0.1.3" author="Eduardo Trentin">
         <preConditions onFail="MARK_RAN" onFailMessage="Erro ao adicionar coluna FG_ATIVO na tabela TASK">
             <not>
                 <columnExists tableName="TASK" columnName="FG_ATIVO" />
@@ -66,25 +51,36 @@
         </rollback>
     </changeSet>
 
-        <changeSet id="1.0.1.4" author="Eduardo Trentin">
-            <preConditions onFail="MARK_RAN" onFailMessage="Erro ao adicionar coluna CD_USER na tabela TASK">
-                <not>
-                    <columnExists tableName="TASK" columnName="CD_USER" />
-                </not>
-            </preConditions>
-            <comment>Adicionar coluna 'CD_USER' na tabela 'TASK'</comment>
 
-            <addColumn tableName="TASK">
-                <column name="CD_USER" type="NUMBER(19)">
-                    <constraints nullable="false" foreignKeyName="FK_TASK_USER_TASK" references="USER_TASK(CD_USER)" />
-                </column>
-            </addColumn>
-            <rollback>
-                ALTER TABLE TASK DROP COLUMN CD_USER;
-            </rollback>
-        </changeSet>
+    <changeSet id="1.0.1.3" author="Eduardo Trentin">
+        <preConditions onFail="MARK_RAN" onFailMessage="Erro ao adicionar coluna DT_TASK na tabela TASK">
+            <not>
+                <columnExists tableName="TASK" columnName="DT_TASK" />
+            </not>
+        </preConditions>
+        <comment>Adicionar coluna 'DT_TASK' na tabela 'TASK'</comment>
+        <addColumn tableName="TASK" >
+            <column name="DT_TASK" type="DATE"/>
+        </addColumn>
+        <rollback>
+            ALTER TABLE TASK DROP COLUMN DT_TASK;
+        </rollback>
+    </changeSet>
 
-
+    <changeSet id="1.0.1.4" author="Eduardo Trentin">
+        <preConditions onFail="MARK_RAN" onFailMessage="Erro ao adicionar coluna DT_TASK na tabela TASK">
+            <not>
+                <columnExists tableName="TASK" columnName="DS_TITLE" />
+            </not>
+        </preConditions>
+        <comment>Adicionar coluna 'DS_TITLE' na tabela 'TASK'</comment>
+        <addColumn tableName="TASK" >
+            <column name="DS_TITLE" type="VARCHAR(255)"/>
+        </addColumn>
+        <rollback>
+            ALTER TABLE TASK DROP COLUMN DS_TITLE;
+        </rollback>
+    </changeSet>
 
 
 </databaseChangeLog>
