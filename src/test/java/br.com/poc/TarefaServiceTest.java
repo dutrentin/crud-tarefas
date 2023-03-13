@@ -21,10 +21,10 @@ class TarefaServiceTest {
     @Test
     public void whenAddTarefa_thenGetTarefa() throws SQLException {
         Task tarefa = new Task();
-        tarefa.setActive(Boolean.TRUE);
-        tarefa.setDateCreationTask(new Date());
-        tarefa.setDateConclusionTask(new Date());
-        tarefa.setDescriptionTask("Levar o lixo");
+        tarefa.setStatus(Boolean.TRUE);
+        tarefa.setCreationDate(new Date());
+        tarefa.setDateConclusion(new Date());
+        tarefa.setDescription("Levar o lixo");
         tarefa.setPerson(new Person(1,"dutrentin","teste"));
         tarefaDAO.saveTask(tarefa);
         tarefaDAO.findAll();

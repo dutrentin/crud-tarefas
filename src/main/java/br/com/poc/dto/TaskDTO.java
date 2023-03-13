@@ -50,8 +50,8 @@ public class TaskDTO {
         return creationDate;
     }
 
-    public void setCreationDate(Date dateTask) {
-        this.dateTask = dateTask;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
     public Date getDateTask() {

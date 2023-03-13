@@ -21,7 +21,7 @@ public class Person implements Serializable {
     @Column(name="NM_PERSON", length = 50)
     private String name;
 
-    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Task> tasks;
 
     @Column(name="DS_EMAIL", length = 30)

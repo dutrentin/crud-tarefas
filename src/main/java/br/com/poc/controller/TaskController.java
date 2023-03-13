@@ -51,10 +51,6 @@ public class TaskController {
 
         taskTransferDTO =  this.taskService.list(filterTask);
 
-        //criaRetornoFake(taskTransferDTO);
-
-        //preencheFiltro(maxResults, page, filterTitle, filterStatus, creationDate, orderBy, filtroTarefa);
-
         return ResponseEntity.status(HttpStatus.OK).body(taskTransferDTO);
 
     }
@@ -71,32 +67,6 @@ public class TaskController {
         filterTask.setCurrentPage(page);
     }
 
-    private void criaRetornoFake(TaskTransferDTO taskTransferDTO) {
-        TaskDTO task = new TaskDTO();
-        task.setCreationDate(new Date());
-        task.setDateConclusion(new Date());
-        task.setStatus(true);
-        task.setId(10);
-        task.setDescription("Teste de tarefa");
-        task.setTitle("Tarefa teste");
-
-        taskTransferDTO.getTasks().add(task);
-        taskTransferDTO.setTotal(1);
-    }
-
-    private void preencheFiltro( int maxResults,  int page,
-                                 String filterTitle,  boolean filterStatus,
-                                 String creationDate, String orderBy,Integer idUsuario,
-                                 FilterTask filtroTarefa) {
-        filtroTarefa.setCurrentPage(page);
-        filtroTarefa.setMaxResults(maxResults);
-        filtroTarefa.setOrder(orderBy);
-        //filtroTarefa.setDataCriacao(creationDate);
-        //filtroTarefa.setDataConclusao(creationDate);
-        filtroTarefa.setDescriptionFilter(filterTitle);
-        filtroTarefa.setFilterStatus(filterStatus);
-        filtroTarefa.setIdPerson(idUsuario);
-    }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Task> getTarefas(@PathVariable Integer id) throws IOException, BiffException {
@@ -122,11 +92,11 @@ public class TaskController {
     }
 
     private void completeFields(TaskDTO task, Task newTask) {
-        newTask.setDescriptionTask(task.getDescription());
-        newTask.setActive(task.isStatus());
+        newTask.setDescription(task.getDescription());
+        newTask.setStatus(task.isStatus());
         newTask.setDateTask(task.getDateTask());
-        newTask.setDateCreationTask(new Date());
-        newTask.setTitleTask(task.getTitle());
+        newTask.setCreationDate(new Date());
+        newTask.setTitle(task.getTitle());
         newTask.setPerson(task.getPerson());
     }
 
@@ -137,6 +107,7 @@ public class TaskController {
 
         try {
             this.taskService.update(tarefa);
+            System.out.println("Atualizou");
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
             throw new GenericPersistenciaException(e.getLocalizedMessage());

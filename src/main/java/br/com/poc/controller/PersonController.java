@@ -71,6 +71,21 @@ public class PersonController {
         return ResponseEntity.status(HttpStatus.OK).body(personDTO);
     }
 
+    @GetMapping(value = "/name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<PersonDTO> getPerson(@PathVariable("name") String name) throws IOException, BiffException {
+        PersonDTO personDTO = new PersonDTO();
+
+        Person person  = personService.findPersonByName(name);
+        if(person != null){
+            personDTO.setEmail(person.getEmail());
+            personDTO.setId(person.getId());
+            personDTO.setName(person.getName());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(personDTO);
+    }
+
     @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @Produces("application/json")

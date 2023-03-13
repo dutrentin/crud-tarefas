@@ -7,25 +7,25 @@ public class CastTaskDTO {
 
     public static TaskDTO castTaskToTaskDTO(Task task){
         TaskDTO taskDTO = new TaskDTO();
-        taskDTO.setTitle(task.getTitleTask());
-        taskDTO.setDescription(task.getDescriptionTask());
+        taskDTO.setTitle(task.getTitle());
+        taskDTO.setDescription(task.getDescription());
         taskDTO.setId(task.getId());
-        taskDTO.setStatus(task.getActive());
-        taskDTO.setDateConclusion(task.getDateConclusionTask());
+        taskDTO.setStatus(task.getStatus());
+        taskDTO.setDateConclusion(task.getDateConclusion());
         taskDTO.setDateTask(task.getDateTask());
-        taskDTO.setCreationDate(task.getDateCreationTask());
+        taskDTO.setCreationDate(task.getCreationDate());
         return taskDTO;
     }
 
     public static TaskDTO castTaskDTOToTask(TaskDTO taskDTO){
         Task task = new Task();
-        task.setTitleTask(taskDTO.getTitle());
-        task.setDescriptionTask(taskDTO.getDescription());
+        task.setTitle(taskDTO.getTitle());
+        task.setDescription(taskDTO.getDescription());
         task.setId(taskDTO.getId());
-        task.setActive(taskDTO.isStatus());
-        task.setDateConclusionTask(taskDTO.getDateConclusion());
+        task.setStatus(taskDTO.isStatus());
+        task.setDateConclusion(taskDTO.getDateConclusion());
         task.setDateTask(taskDTO.getDateTask());
-        task.setDateCreationTask(taskDTO.getCreationDate());
+        task.setCreationDate(taskDTO.getCreationDate());
         return taskDTO;
     }
 }

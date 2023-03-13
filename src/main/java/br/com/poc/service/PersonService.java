@@ -96,4 +96,18 @@ public class PersonService implements Serializable {
 
     }
 
+    public Person findPersonByName(String name) throws GenericPersistenciaException {
+
+        try {
+
+            return this.personDAO.findPersonByName(name);
+
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+            e.printStackTrace();
+            throw new GenericPersistenciaException(e.getMessage());
+        }
+
+    }
+
 }

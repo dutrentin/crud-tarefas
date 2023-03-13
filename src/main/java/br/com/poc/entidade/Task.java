@@ -5,7 +5,6 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "TASK")
@@ -20,29 +19,28 @@ public class Task implements Serializable {
     private Integer id;
 
     @Column(name = "DS_TITLE", length = 255)
-    private String titleTask;
+    private String title;
 
     @Column(name = "DS_TASK", length = 1500)
-    private String descriptionTask;
+    private String description;
 
 
     @Column(name = "DT_CREATION", nullable = false, length = 10)
-    private Date dateCreationTask;
+    private Date creationDate;
 
     @Column(name = "DT_TASK", nullable = false, length = 10)
     private Date dateTask;
 
     @Column(name = "DT_CONCLUSION", length = 10)
-    private Date dateConclusionTask;
+    private Date dateConclusion;
 
     @Column(name = "FG_ACTIVE", length = 1, nullable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean active;
+    private boolean status;
 
     @JoinColumn(name = "CD_PERSON", referencedColumnName = "CD_PERSON")
-    @ManyToOne
-    private Person person
-            ;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Person person;
 
     public Integer getId() {
         return id;
@@ -52,36 +50,36 @@ public class Task implements Serializable {
         this.id = id;
     }
 
-    public String getDescriptionTask() {
-        return descriptionTask;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescriptionTask(String descriptionTask) {
-        this.descriptionTask = descriptionTask;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Date getDateCreationTask() {
-        return dateCreationTask;
+    public Date getCreationDate() {
+        return creationDate;
     }
 
-    public void setDateCreationTask(Date dateCreationTask) {
-        this.dateCreationTask = dateCreationTask;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
-    public Date getDateConclusionTask() {
-        return dateConclusionTask;
+    public Date getDateConclusion() {
+        return dateConclusion;
     }
 
-    public void setDateConclusionTask(Date dateConclusionTask) {
-        this.dateConclusionTask = dateConclusionTask;
+    public void setDateConclusion(Date dateConclusion) {
+        this.dateConclusion = dateConclusion;
     }
 
-    public Boolean getActive() {
-        return active;
+    public Boolean getStatus() {
+        return status;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public Date getDateTask() {
@@ -92,12 +90,12 @@ public class Task implements Serializable {
         this.dateTask = dateTask;
     }
 
-    public String getTitleTask() {
-        return titleTask;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitleTask(String titleTask) {
-        this.titleTask = titleTask;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Person getPerson() {
@@ -106,5 +104,13 @@ public class Task implements Serializable {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

@@ -9,13 +9,14 @@ public class FilterTask implements Serializable {
 
     private Integer idPerson;
     private String descriptionFilter;
-    private String titleTask;
+    private String title;
     private Boolean filterStatus;
     private Date dateCreation;
     private Date dateTask;
     private Date dataConclusion;
     private int maxResults;
     private int currentPage;
+    private boolean status;
     private Date dateInitial;
     private Date dateFinal;
     private String order;
@@ -96,12 +97,12 @@ public class FilterTask implements Serializable {
         this.dateTask = dateTask;
     }
 
-    public String getTitleTask() {
-        return titleTask;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitleTask(String titleTask) {
-        this.titleTask = titleTask;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Date getDateInitial() {
@@ -118,5 +119,13 @@ public class FilterTask implements Serializable {
 
     public void setDateFinal(Date dateFinal) {
         this.dateFinal = dateFinal;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

@@ -94,14 +94,14 @@ public class TaskDAO extends PersistenciaDao<Task> {
                 hql.append(" AND p.dateTask <= :dataFinal ");
             }
 
-            if(filterTask.getTitleTask() != null){
-                hql.append(" AND UPPER(t.titleTask) like UPPER(CONCAT('%', :title, '%')) ");
+            if(filterTask.getTitle() != null){
+                hql.append(" AND UPPER(t.title) like UPPER(CONCAT('%', :title, '%')) ");
             }
             if(filterTask.getDateTask() != null){
                 hql.append(" AND UPPER(p.name) like UPPER(CONCAT('%', :name, '%')) ");
             }
 
-            hql.append(" ORDER BY t.titleTask ");
+            hql.append(" ORDER BY t.title ");
 
             Query query = getEntityManager().createQuery(hql.toString());
 

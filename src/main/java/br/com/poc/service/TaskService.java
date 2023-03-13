@@ -1,10 +1,10 @@
 package br.com.poc.service;
 
+import br.com.poc.dao.PersonDAO;
 import br.com.poc.dao.TaskDAO;
 import br.com.poc.dto.TaskDTO;
 import br.com.poc.dto.TaskTransferDTO;
 import br.com.poc.entidade.Task;
-import br.com.poc.entidade.Person;
 import br.com.poc.exception.GenericPersistenciaException;
 import br.com.poc.util.CastTaskDTO;
 import br.com.poc.util.FilterTask;
@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 @Service("taskService")
@@ -27,6 +26,9 @@ public class TaskService implements Serializable {
 
     @Autowired
     private TaskDAO taskDAO;
+
+    @Autowired
+    private PersonDAO personDAO;
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void saveTask(Task task) throws GenericPersistenciaException {
@@ -51,11 +53,17 @@ public class TaskService implements Serializable {
 
         try {
 
-            //Bebida bebida = this.bebidaDAO.findBebidaById(Integer.parseInt(bebidaDTO.getId()));
-            //preencheTipoBebida(bebidaDTO, bebida);
-            //bebida.setDescricaoBebida(bebidaDTO.getNome());
+            if(task.getPerson() != null){
+                task.setPerson(personDAO.findPersonById(task.getPerson().getId()));
+            }
+
+            if(task.getStatus() == null){
+                task.setStatus(true);
+            }
+
 
             this.taskDAO.update(task);
+            System.out.println("Atualizou");
 
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
@@ -95,17 +103,6 @@ public class TaskService implements Serializable {
      */
 
     public TaskTransferDTO list(FilterTask filterTask) throws GenericPersistenciaException {
-
-        /*Task task2 = new Task();
-        task2.setActive(Boolean.TRUE);
-        task2.setDateConclusionTask(new Date());
-        task2.setDateCreationTask(new Date());
-        task2.setDateTask(new Date());
-        task2.setDescriptionTask("Levar o lixo");
-        task2.setPerson(new Person(9,"eduardo.trentin","teste"));
-        taskDAO.saveTask(task2);
-        taskDAO.findAll();
-         */
 
         TaskTransferDTO taskTransferDTO = new TaskTransferDTO();
         try {

@@ -124,5 +124,20 @@ public class PersonDAO extends PersistenciaDao<Person> {
 
     }
 
+    public Person findPersonByName(String name) throws GenericPersistenciaException {
+
+        try {
+
+            StringBuilder hql = new StringBuilder().append("SELECT p FROM Person p where p.name = :name ");
+            Query query = getEntityManager().createQuery(hql.toString());
+            query.setParameter("name", name);
+            return (Person) query.getResultList().get(0);
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+            throw new GenericPersistenciaException(e.getLocalizedMessage());
+        }
+
+    }
+
 
 }
