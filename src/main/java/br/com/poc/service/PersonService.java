@@ -3,6 +3,7 @@ package br.com.poc.service;
 import br.com.poc.dao.PersonDAO;
 import br.com.poc.entidade.Person;
 import br.com.poc.exception.GenericPersistenciaException;
+import br.com.poc.util.FilterPerson;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,9 +63,9 @@ public class PersonService implements Serializable {
 
     }
 
-    public List<Person> list() throws GenericPersistenciaException {
+    public List<Person> list(FilterPerson filterPerson) throws GenericPersistenciaException {
         try {
-            List<Person> returnList = this.personDAO.list();
+            List<Person> returnList = this.personDAO.list(filterPerson);
             return  returnList;
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());

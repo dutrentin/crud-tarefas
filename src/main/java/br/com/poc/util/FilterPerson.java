@@ -1,10 +1,11 @@
 package br.com.poc.util;
 
-public class FilterUser {
+public class FilterPerson {
 
     private Integer id;
     private String name;
     private String email;
+    private boolean status;
 
     public Integer getId() {
         return id;
@@ -28,5 +29,13 @@ public class FilterUser {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

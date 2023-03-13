@@ -81,17 +81,39 @@ public class TaskDAO extends PersistenciaDao<Task> {
         try {
 
             StringBuilder hql = new StringBuilder().append("SELECT t FROM Task t ")
-                    //.append(" join t.person p ")
+                    .append(" join t.person p ")
                     .append(" WHERE 1 = 1 ");
-            //if(filterTask != null){
-              //  hql.append(" AND p.id = :idPerson ");
-            //}
 
+            if(filterTask != null && filterTask.getIdPerson() > 0){
+                hql.append(" AND p.id = :idPerson ");
+            }
+            if(filterTask.getDateInitial() != null){
+                hql.append(" AND p.dateTask > :dataInitial ");
+            }
+            if(filterTask.getDateFinal() != null){
+                hql.append(" AND p.dateTask <= :dataFinal ");
+            }
+
+            if(filterTask.getTitleTask() != null){
+                hql.append(" AND UPPER(t.titleTask) like UPPER(CONCAT('%', :title, '%')) ");
+            }
+            if(filterTask.getDateTask() != null){
+                hql.append(" AND UPPER(p.name) like UPPER(CONCAT('%', :name, '%')) ");
+            }
+
+            hql.append(" ORDER BY t.titleTask ");
 
             Query query = getEntityManager().createQuery(hql.toString());
-            //if(filterTask != null){
-                //query.setParameter("idPerson", filterTask.getIdPerson());
-            //}
+
+            if(filterTask != null && filterTask.getIdPerson() > 0){
+                query.setParameter("idPerson", filterTask.getIdPerson());
+            }
+            if(filterTask.getDateInitial() != null){
+                query.setParameter("dataInitial", filterTask.getDateInitial());
+            }
+            if(filterTask.getDateFinal() != null){
+                query.setParameter("dataFinal", filterTask.getDateFinal());
+            }
 
             return query.getResultList();
 

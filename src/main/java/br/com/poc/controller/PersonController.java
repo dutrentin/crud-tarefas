@@ -6,6 +6,7 @@ import br.com.poc.entidade.Person;
 import br.com.poc.entidade.Task;
 import br.com.poc.exception.GenericPersistenciaException;
 import br.com.poc.service.PersonService;
+import br.com.poc.util.FilterPerson;
 import io.swagger.annotations.ApiOperation;
 import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
@@ -33,14 +34,18 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/list/{name}/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<PersonTransferDTO> getPersons() throws IOException, BiffException {
+    public ResponseEntity<PersonTransferDTO> getPersons(@PathVariable("name") String name , @PathVariable("email") String email ) throws IOException, BiffException {
         PersonTransferDTO personTransferDTO = new PersonTransferDTO();
+
+        FilterPerson filterPerson = new FilterPerson();
+        filterPerson.setEmail(email);
+        filterPerson.setName(name);
 
         List<PersonDTO> persons = new ArrayList<>();
 
-        for(Person person : personService.list()){
+        for(Person person : personService.list(filterPerson)){
             PersonDTO personDTO = new PersonDTO(person.getId(), person.getName(), person.getEmail());
             personTransferDTO.getPersons().add(personDTO);
         }
@@ -82,13 +87,6 @@ public class PersonController {
 
         return ResponseEntity.created(uri).build();
     }
-
-    /*@GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ResponseEntity<List<person>> getpersons() throws IOException, BiffException {
-        return ResponseEntity.status(HttpStatus.OK).body(personService.list());
-    }
-     */
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody

@@ -2,6 +2,7 @@ package br.com.poc.dao;
 
 import br.com.poc.entidade.Person;
 import br.com.poc.exception.GenericPersistenciaException;
+import br.com.poc.util.FilterPerson;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -77,14 +78,30 @@ public class PersonDAO extends PersistenciaDao<Person> {
         }
     }
 
-    public List<Person> list() throws GenericPersistenciaException {
+    public List<Person> list(FilterPerson filterPerson) throws GenericPersistenciaException {
 
         try {
 
             StringBuilder hql = new StringBuilder().append("SELECT p FROM Person p ");
+            hql.append(" WHERE 1 = 1 ");
 
+            if(filterPerson.getEmail() != null && !filterPerson.getEmail().equals("-")){
+                hql.append(" AND UPPER(p.email) like UPPER(CONCAT('%', :email, '%')) ");
+            }
+            if(filterPerson.getName() != null && !filterPerson.getName().equals("-")){
+                hql.append(" AND UPPER(p.name) like UPPER(CONCAT('%', :name, '%')) ");
+            }
 
+            hql.append(" ORDER BY p.name");
             Query query = getEntityManager().createQuery(hql.toString());
+
+            if(filterPerson.getEmail() != null && !filterPerson.getEmail().equals("-")){
+                query.setParameter("email", filterPerson.getEmail());
+            }
+            if(filterPerson.getName() != null && !filterPerson.getName().equals("-")){
+                query.setParameter("name", filterPerson.getName());
+            }
+
             return query.getResultList();
 
         } catch (Exception e) {
