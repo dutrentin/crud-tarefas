@@ -11,4 +11,5 @@ Caso o apontamento do banco no arquivo application.properties esteja correto, o 
 
 OBSERVAÇÕES:
 - Devido ao tempo de desenvolvimento, algumas funcionalidades como Paginação foram implementadas parcialmente.
+- Talvez após criar a estrutura via Liquibase e ocorrer erro ao subir novamente a app, deve-se trocar a propriedadw spring.liquibase.enabled=true no application.properties para false.
 
