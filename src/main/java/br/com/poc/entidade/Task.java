@@ -39,7 +39,7 @@ public class Task implements Serializable {
     private boolean status;
 
     @JoinColumn(name = "CD_PERSON", referencedColumnName = "CD_PERSON")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Person person;
 
     public Integer getId() {

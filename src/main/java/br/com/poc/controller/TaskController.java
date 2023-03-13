@@ -2,6 +2,7 @@ package br.com.poc.controller;
 
 import br.com.poc.dto.TaskDTO;
 import br.com.poc.dto.TaskTransferDTO;
+import br.com.poc.entidade.Person;
 import br.com.poc.entidade.Task;
 import br.com.poc.exception.GenericPersistenciaException;
 import br.com.poc.service.TaskService;
@@ -62,6 +63,7 @@ public class TaskController {
         if(!dateFinal.equals("-")){
             filterTask.setDateFinal(formatter.parse(dateFinal));
         }
+        filterTask.setTitle(title);
         filterTask.setIdPerson(idPerson);
         filterTask.setMaxResults(maxResults);
         filterTask.setCurrentPage(page);
@@ -91,13 +93,20 @@ public class TaskController {
         return ResponseEntity.created(uri).build();
     }
 
-    private void completeFields(TaskDTO task, Task newTask) {
-        newTask.setDescription(task.getDescription());
-        newTask.setStatus(task.isStatus());
-        newTask.setDateTask(task.getDateTask());
+    private void completeFields(TaskDTO taskDTO, Task newTask) {
+        newTask.setDescription(taskDTO.getDescription());
+        newTask.setStatus(taskDTO.isStatus());
+        newTask.setDateTask(taskDTO.getDateTask());
         newTask.setCreationDate(new Date());
-        newTask.setTitle(task.getTitle());
-        newTask.setPerson(task.getPerson());
+        newTask.setTitle(taskDTO.getTitle());
+
+        Person person = new Person();
+        person.setName(taskDTO.getPerson().getName());
+        person.setEmail(taskDTO.getPerson().getEmail());
+        person.setId(taskDTO.getPerson().getId());
+
+        newTask.setPerson(person);
+
     }
 
 

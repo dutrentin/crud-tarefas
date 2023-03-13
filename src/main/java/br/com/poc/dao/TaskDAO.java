@@ -87,17 +87,17 @@ public class TaskDAO extends PersistenciaDao<Task> {
             if(filterTask != null && filterTask.getIdPerson() > 0){
                 hql.append(" AND p.id = :idPerson ");
             }
-            if(filterTask.getDateInitial() != null){
-                hql.append(" AND p.dateTask > :dataInitial ");
+            if(filterTask != null &&  filterTask.getDateInitial() != null){
+                hql.append(" AND t.dateTask > :dataInitial ");
             }
-            if(filterTask.getDateFinal() != null){
-                hql.append(" AND p.dateTask <= :dataFinal ");
+            if(filterTask != null &&  filterTask.getDateFinal() != null){
+                hql.append(" AND t.dateTask <= :dataFinal ");
             }
 
-            if(filterTask.getTitle() != null){
+            if(filterTask != null && filterTask.getTitle() != null && !filterTask.getTitle().equals("-")){
                 hql.append(" AND UPPER(t.title) like UPPER(CONCAT('%', :title, '%')) ");
             }
-            if(filterTask.getDateTask() != null){
+            if(filterTask != null &&  filterTask.getDateTask() != null){
                 hql.append(" AND UPPER(p.name) like UPPER(CONCAT('%', :name, '%')) ");
             }
 
@@ -107,6 +107,9 @@ public class TaskDAO extends PersistenciaDao<Task> {
 
             if(filterTask != null && filterTask.getIdPerson() > 0){
                 query.setParameter("idPerson", filterTask.getIdPerson());
+            }
+            if(filterTask != null && filterTask.getTitle() != null && !filterTask.getTitle().equals("-")){
+                query.setParameter("title", filterTask.getTitle());
             }
             if(filterTask.getDateInitial() != null){
                 query.setParameter("dataInitial", filterTask.getDateInitial());

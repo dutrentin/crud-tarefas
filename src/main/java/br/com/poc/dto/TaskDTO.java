@@ -12,7 +12,7 @@ public class TaskDTO {
     private Date creationDate;
     private Date dateTask;
     private Date dateConclusion;
-    private Person person;
+    private PersonDTO person;
 
     public Integer getId() {
         return id;
@@ -70,11 +70,11 @@ public class TaskDTO {
         this.dateConclusion = dateConclusion;
     }
 
-    public Person getPerson() {
+    public PersonDTO getPerson() {
         return person;
     }
 
-    public void setPerson(Person person) {
+    public void setPerson(PersonDTO person) {
         this.person = person;
     }
 }
